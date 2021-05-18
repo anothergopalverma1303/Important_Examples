@@ -31,3 +31,10 @@ int main()
             << findSingle(ar, n);
         return 0;
     }
+
+/*
+p	q	p & q	p | q	p ^ q
+0	0	  0	      0	      0
+0	1	  0	      1	      1
+1	1	  1	      1	      0
+1	0	  0	      1	      1
