@@ -1,60 +1,87 @@
-#define side 8
+//isSafe(int mat[][N], int r, int c)
+//	condition for presenting in the same column hence return 0
+//	condition for presenting in the / digonal hence return 0
+//	condition for presenting in the \ digonal hence return 0
+//	if non of the condition match above then the box is safe to be placed hence return 1
+//
+//nQureen(int mat[][N], int r)
+//	if(r==N) printArray and return
+//	else for(int i = 0 ; i < N ; i++)
+//		if(isSafe(mat, r, i)
+//			mat[r][i] = 'Q'
+//			nQureen(mat, r+1)
+//			mat[r][i]='_' 
+//
+//printArray(int mat[][N])
+//	for(int i = 0 ; i < N ; i++)
+//		for(int j = 0 ; j < N ; j++)
+//			cout<<arr[i][j]<<" ";
+//		cout<<endl;
+//
+//main()
+//	create a ChessBoard for N X N
+//	use memset(ChessBoard, "_", sizeof ChessBoard) to create a blank arry of '_' character
+//	use nQureen(mat, 0)
+
 #include<bits/stdc++.h>
+#define n 10
 using namespace std;
-void printBoard(int board[side][side])
+int isSafe(char mat[][n], int r, int c)
 {
-    for(int i = 0 ; i < side ; i++){
-        for(int j = 0 ; j < side ; j++){
-            cout<<board[i][j]<<" ";
-        }
-        cout<<endl;
-    }
+	for(int i = 0 ; i < n ; i++)
+	{
+		if(mat[i][c]=='Q')
+			return 0;
+	}	
+	for(int i = r , j = c ; i>=0, j>=0 ; i--, j--)
+	{
+		if(mat[i][j]=='Q')
+			return 0;
+	}
+	for(int i = r, j = c ; i>=0, j<n ; i--, j++)
+	{
+		if(mat[i][j]=='Q')
+			return 0;
+	}
+	return 1;
 }
-bool isValid(int board[side][side], int row, int col)
+
+void printArray(char mat[][n])
 {
-    for(int i = 0 ; i < col ; i++)//checking on x axis
-        if(board[row][i])
-            return false;
-    for(int i = 0 ; i < row ; i++)//checking on y axis
-        if(board[i][col])
-            return false;
-    for(int i = row, j = col ; i>=0 && j>=0 ; i--, j--)//checking toward the left top since the right bottom is not still traversed
-        if(board[i][j])
-            return false;
-    for(int i = row, j = col ; j>=0 && i < side ; j--, i++)//checking the left bottom sicne the right top is not still traversed
-        if(board[i][j])
-            return false;
-    return true;
+	for(int i = 0 ; i < n ; i++)
+	{
+		for(int j = 0 ; j < n ; j++)
+		{
+			cout<<mat[i][j]<<" ";
+		}
+		cout<<endl;
+	}
 }
-bool NQueen(int board[side][side], int col)
+
+
+void nQueen(char mat[][n], int r)
 {
-    if(col>=side)
-        return true;
-    for(int i = 0 ; i < side ; i++){
-        if(isValid(board, i, col)){
-            board[i][col]=1;
-            if(NQueen(board, col+1))
-                return true;
-            board[i][col]=0;
-        }
-    }
-    return false;
-}
-void solve()
-{
-    int board[side][side];
-    for(int i = 0 ; i < side ; i++) {
-        for(int j = 0 ; j < side ; j++) {
-            board[i][j] = 0;
-        } 
-    }
-    if(NQueen(board, 0)==false) {
-        cout<<"solution dont exist";
-    }
-    printBoard(board);
+	if(r==n)
+	{
+		printArray(mat);
+		cout<<endl;
+		return;
+	}
+	for(int i = 0 ; i < n ; i++)
+	{
+		if(isSafe(mat, r, i))
+		{
+			mat[r][i] = 'Q';
+			nQueen(mat, r+1);
+			mat[r][i] = '_';
+		}
+	}
 }
 int main()
 {
-    solve();
-    return 0;
+	char mat[n][n];
+	memset(mat, '_', sizeof mat);
+	nQueen(mat, 0);
+	printArray(mat);
+	return 0;
 }
