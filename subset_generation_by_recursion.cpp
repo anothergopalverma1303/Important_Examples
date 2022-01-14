@@ -5,32 +5,25 @@ using namespace std;
 // str : Stores input string
 // curr : Stores current subset
 // index : Index in current subset, curr
-void powerSet(string str, int index = -1,
+void powerSet(string str, int index = 0,
 			string curr = "")
 {
 	int n = str.length();
 
 	// base case
-	if (index == n)
+	if (index == n) {
+		cout << curr << endl;
 		return;
-
-	// First print current subset
-	cout << curr << "\n";
-
-	// Try appending remaining characters
-	// to current subset
-	for (int i = index + 1; i < n; i++) {
-
-		curr += str[i];
-		powerSet(str, i, curr);
-
-		// Once all subsets beginning with
-		// initial "curr" are printed, remove
-		// last character to consider a different
-		// prefix of subsets.
-		curr.erase(curr.size() - 1);
 	}
-	return;
+
+	// Two cases for every character
+	// (i) We consider the character
+	// as part of current subset
+	// (ii) We do not consider current
+	// character as part of current
+	// subset
+	powerSet(str, index + 1, curr + str[index]);
+	powerSet(str, index + 1, curr);
 }
 
 // Driver code
